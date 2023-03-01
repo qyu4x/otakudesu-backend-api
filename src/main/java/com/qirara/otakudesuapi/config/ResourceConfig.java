@@ -31,4 +31,7 @@ public class ResourceConfig {
     @Value("${otakudesu.specific}")
     private String otakudesuSpecific;
 
+    @Value("${otakudesu.search}")
+    private String otakudesuSearch;
+
 }

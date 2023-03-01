@@ -29,9 +29,11 @@ public class OtakudesuController {
 
     private final AnimeDetailEpisodeService animeDetailEpisodeService;
 
+    private final AnimeSearchService animeSearchService;
 
 
-    public OtakudesuController(LatestAnimeService latestAnimeService, AnimeListService animeListService, OngoingAnimeService ongoingAnimeService, AnimeMoviesService animeMoviesService, AnimeGenresService animeGenresService, AnimeDetailService animeDetailService, AnimeDetailEpisodeService animeDetailEpisodeService) {
+
+    public OtakudesuController(LatestAnimeService latestAnimeService, AnimeListService animeListService, OngoingAnimeService ongoingAnimeService, AnimeMoviesService animeMoviesService, AnimeGenresService animeGenresService, AnimeDetailService animeDetailService, AnimeDetailEpisodeService animeDetailEpisodeService, AnimeSearchService animeSearchService) {
         this.latestAnimeService = latestAnimeService;
         this.animeListService = animeListService;
         this.ongoingAnimeService = ongoingAnimeService;
@@ -39,6 +41,7 @@ public class OtakudesuController {
         this.animeGenresService = animeGenresService;
         this.animeDetailService = animeDetailService;
         this.animeDetailEpisodeService = animeDetailEpisodeService;
+        this.animeSearchService = animeSearchService;
     }
 
     @GetMapping("latest/{page}")
@@ -129,5 +132,15 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
+    @GetMapping("find")
+    public ResponseEntity<WebResponse<List<AnimeListResponse>>> animeSearch(@RequestParam String keyword) throws IOException {
+        List<AnimeListResponse> animeSearchResponses = animeSearchService.get(keyword);
+        WebResponse<List<AnimeListResponse>> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                animeSearchResponses
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
 
 }
