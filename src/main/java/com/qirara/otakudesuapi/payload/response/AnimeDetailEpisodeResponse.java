@@ -5,12 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OngoingAnimeResponse {
-
-    private String imageURL;
+public class AnimeDetailEpisodeResponse {
 
     private String title;
 
-    private String linkHref;
+    private String videoStreamingUrl;
 
 }

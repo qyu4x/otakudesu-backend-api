@@ -1,16 +1,10 @@
 package com.qirara.otakudesuapi.controller;
 
-import com.qirara.otakudesuapi.payload.response.AnimeListResponse;
-import com.qirara.otakudesuapi.payload.response.LatestAnimeResponse;
-import com.qirara.otakudesuapi.payload.response.WebResponse;
-import com.qirara.otakudesuapi.service.AnimeListService;
-import com.qirara.otakudesuapi.service.LatestAnimeService;
+import com.qirara.otakudesuapi.payload.response.*;
+import com.qirara.otakudesuapi.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,11 +15,30 @@ import java.util.List;
 public class OtakudesuController {
 
     private final LatestAnimeService latestAnimeService;
+
     private final AnimeListService animeListService;
 
-    public OtakudesuController(LatestAnimeService latestAnimeService, AnimeListService animeListService) {
+    private final OngoingAnimeService ongoingAnimeService;
+
+    private final AnimeMoviesService animeMoviesService;
+
+    private final AnimeGenresService animeGenresService;
+
+
+    private final AnimeDetailService animeDetailService;
+
+    private final AnimeDetailEpisodeService animeDetailEpisodeService;
+
+
+
+    public OtakudesuController(LatestAnimeService latestAnimeService, AnimeListService animeListService, OngoingAnimeService ongoingAnimeService, AnimeMoviesService animeMoviesService, AnimeGenresService animeGenresService, AnimeDetailService animeDetailService, AnimeDetailEpisodeService animeDetailEpisodeService) {
         this.latestAnimeService = latestAnimeService;
         this.animeListService = animeListService;
+        this.ongoingAnimeService = ongoingAnimeService;
+        this.animeMoviesService = animeMoviesService;
+        this.animeGenresService = animeGenresService;
+        this.animeDetailService = animeDetailService;
+        this.animeDetailEpisodeService = animeDetailEpisodeService;
     }
 
     @GetMapping("latest/{page}")
@@ -49,5 +62,72 @@ public class OtakudesuController {
         );
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
+
+    @GetMapping("ongoing-list/{page}")
+    public ResponseEntity<WebResponse<List<OngoingAnimeResponse>>> ongoingAnime(@PathVariable Integer page) throws IOException {
+        List<OngoingAnimeResponse> ongoingAnimeResponses = ongoingAnimeService.getAll(page);
+        WebResponse<List<OngoingAnimeResponse>> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                ongoingAnimeResponses
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("movie-list/{page}")
+    public ResponseEntity<WebResponse<List<AnimeMoviesResponse>>> animeMovie(@PathVariable Integer page) throws IOException {
+        List<AnimeMoviesResponse> moviesResponses = animeMoviesService.getAll(page);
+        WebResponse<List<AnimeMoviesResponse>> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                moviesResponses
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("genres")
+    public ResponseEntity<WebResponse<List<AnimeGenreResponse>>> animeGenres() throws IOException {
+        List<AnimeGenreResponse> animeGenreResponses = animeGenresService.getAll();
+        WebResponse<List<AnimeGenreResponse>> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                animeGenreResponses
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("genre/{genre}/{page}")
+    public ResponseEntity<WebResponse<List<AnimeListResponse>>> animeGenreDetails(@PathVariable String genre, @PathVariable Integer page) throws IOException {
+        List<AnimeListResponse> animeGenreResponses = animeGenresService.get(genre, page);
+        WebResponse<List<AnimeListResponse>> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                animeGenreResponses
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("detail/{href}")
+    public ResponseEntity<WebResponse<AnimeDetailResponse>> animeDetails(@PathVariable String href) throws IOException {
+        AnimeDetailResponse animeDetailResponse = animeDetailService.getDetails(href);
+        WebResponse<AnimeDetailResponse> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                animeDetailResponse
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/{href}")
+    public ResponseEntity<WebResponse<AnimeDetailEpisodeResponse>> animeEpisodeDetails(@PathVariable String href, @RequestParam Integer ep) throws IOException {
+        AnimeDetailEpisodeResponse animeDetailEpisodeResponse = animeDetailEpisodeService.get(href, ep);
+        WebResponse<AnimeDetailEpisodeResponse> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                animeDetailEpisodeResponse
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
 
 }

@@ -5,11 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OngoingAnimeResponse {
+public class AnimeGenreResponse {
 
-    private String imageURL;
+    private String genre;
 
-    private String title;
+    private String total;
 
     private String linkHref;
 

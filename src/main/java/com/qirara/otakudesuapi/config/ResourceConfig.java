@@ -25,4 +25,10 @@ public class ResourceConfig {
     @Value("${otakudesu.genre}")
     private String otakudesuGenre;
 
+    @Value("${otakudesu.genre-detail}")
+    private String otakudesuGenreDetail;
+
+    @Value("${otakudesu.specific}")
+    private String otakudesuSpecific;
+
 }

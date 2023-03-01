@@ -5,9 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OngoingAnimeResponse {
-
-    private String imageURL;
+public class ListEpisodeResponse {
 
     private String title;
 
