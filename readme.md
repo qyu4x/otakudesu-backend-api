@@ -1,1 +1,8 @@
-## Documentation is coming soon
+# otakudesu unofficial API
+
+
+Link Documentation
+```
+
+```
+
