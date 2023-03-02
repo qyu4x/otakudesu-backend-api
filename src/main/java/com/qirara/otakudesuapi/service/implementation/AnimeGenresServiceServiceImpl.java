@@ -66,11 +66,11 @@ public class AnimeGenresServiceServiceImpl implements AnimeGenresService {
         log.info("Fetching url {} ", url);
 
         Document document = Jsoup.connect(url).get();
-        Elements listsLatestAnime = document.getElementsByClass("col-md-3 col-sm-3");
-        listsLatestAnime.forEach(latestAnime -> {
-            String imageURL = latestAnime.select("img").attr("src");
-            String title = latestAnime.select("img").attr("alt");
-            String linkHref = latestAnime.select("a").attr("href");
+        Elements listGenretAnime = document.getElementsByClass("col-md-3 col-sm-3");
+        listGenretAnime.forEach(genreAnime -> {
+            String imageURL = genreAnime.select("img").attr("src");
+            String title = genreAnime.select("img").attr("alt");
+            String linkHref =  new StringBuilder(genreAnime.select("a").attr("href").replace(resourceConfig.getOtakudesuSpecific(), "").replace("/", "")).insert(0, "/").toString();
             log.info("image url {} ", imageURL);
             log.info("title {} ", imageURL);
             log.info("href {} ", imageURL);

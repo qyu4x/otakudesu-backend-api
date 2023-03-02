@@ -57,7 +57,7 @@ public class AnimeDetailServiceServiceImpl implements AnimeDetailService {
         List<ListAnimeEpisodeResponse> listAnimeEpisodeResponses = new ArrayList<>();
         Elements listEpisode = detailAnime.select("ul[class=daftarepi]").select("h4");
         listEpisode.stream().forEach(episode -> {
-            String href = episode.select("a").attr("href");
+            String href = new StringBuilder(episode.select("a").attr("href").replace(resourceConfig.getOtakudesuSpecific(), "").replace("/", "")).insert(0, "/").toString();
             String episodeTitle = episode.select("a").text();
 
             ListAnimeEpisodeResponse listAnimeEpisodeResponse = new ListAnimeEpisodeResponse();

@@ -37,7 +37,7 @@ public class LatestAnimeServiceImpl implements LatestAnimeService {
         listsLatestAnime.forEach(latestAnime -> {
             String imageURL = latestAnime.select("img").attr("src");
             String title = latestAnime.select("img").attr("alt");
-            String linkHref = latestAnime.select("a").attr("href");
+            String linkHref =  new StringBuilder(latestAnime.select("a").attr("href").replace(resourceConfig.getOtakudesuSpecific(), "").replace("/", "")).insert(0, "/").toString();
             log.info("image url {} ", imageURL);
             log.info("title {} ", imageURL);
             log.info("href {} ", imageURL);

@@ -42,7 +42,7 @@ public class OngoingAnimeServiceServiceImpl implements OngoingAnimeService {
         listOngoingAnime.stream().forEach(ongoingAnime -> {
             String imageUrl = ongoingAnime.select("img").attr("src");
             String title = ongoingAnime.select("img").attr("alt");
-            String href = ongoingAnime.select("a").attr("href");
+            String href = new StringBuilder(ongoingAnime.select("a").attr("href").replace(resourceConfig.getOtakudesuSpecific(), "").replace("/", "")).insert(0, "/").toString();
 
             log.info("image url {} ", title);
             log.info("title {} ", imageUrl);

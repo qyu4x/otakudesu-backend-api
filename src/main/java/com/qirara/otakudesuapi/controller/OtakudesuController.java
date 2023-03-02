@@ -24,7 +24,6 @@ public class OtakudesuController {
 
     private final AnimeGenresService animeGenresService;
 
-
     private final AnimeDetailService animeDetailService;
 
     private final AnimeDetailEpisodeService animeDetailEpisodeService;
@@ -132,7 +131,7 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
-    @GetMapping("find")
+    @GetMapping("search")
     public ResponseEntity<WebResponse<List<AnimeListResponse>>> animeSearch(@RequestParam String keyword) throws IOException {
         List<AnimeListResponse> animeSearchResponses = animeSearchService.get(keyword);
         WebResponse<List<AnimeListResponse>> webResponse = new WebResponse<>(
