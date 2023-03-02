@@ -2,6 +2,7 @@ package com.qirara.otakudesuapi.controller;
 
 import com.qirara.otakudesuapi.payload.response.*;
 import com.qirara.otakudesuapi.service.*;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,8 @@ public class OtakudesuController {
         this.animeSearchService = animeSearchService;
     }
 
+
+    @Operation(summary = "get list of the latest anime")
     @GetMapping("latest/{page}")
     public ResponseEntity<WebResponse<List<LatestAnimeResponse>>> listLatestAnime(@PathVariable Integer page) throws IOException {
         List<LatestAnimeResponse> latestAnimeResponses = latestAnimeService.getAll(page);
@@ -54,6 +57,7 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "get list of available anime")
     @GetMapping("anime-list/{page}")
     public ResponseEntity<WebResponse<List<AnimeListResponse>>> listAnime(@PathVariable Integer page) throws IOException {
         List<AnimeListResponse> latestAnimeResponses = animeListService.getAll(page);
@@ -65,6 +69,7 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "get list of ongoing  anime")
     @GetMapping("ongoing-list/{page}")
     public ResponseEntity<WebResponse<List<OngoingAnimeResponse>>> ongoingAnime(@PathVariable Integer page) throws IOException {
         List<OngoingAnimeResponse> ongoingAnimeResponses = ongoingAnimeService.getAll(page);
@@ -76,6 +81,7 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "get list of movie anime")
     @GetMapping("movie-list/{page}")
     public ResponseEntity<WebResponse<List<AnimeMoviesResponse>>> animeMovie(@PathVariable Integer page) throws IOException {
         List<AnimeMoviesResponse> moviesResponses = animeMoviesService.getAll(page);
@@ -87,6 +93,7 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "get list of genres anime")
     @GetMapping("genres")
     public ResponseEntity<WebResponse<List<AnimeGenreResponse>>> animeGenres() throws IOException {
         List<AnimeGenreResponse> animeGenreResponses = animeGenresService.getAll();
@@ -98,6 +105,7 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "get list of specific anime based on genre")
     @GetMapping("genre/{genre}/{page}")
     public ResponseEntity<WebResponse<List<AnimeListResponse>>> animeGenreDetails(@PathVariable String genre, @PathVariable Integer page) throws IOException {
         List<AnimeListResponse> animeGenreResponses = animeGenresService.get(genre, page);
@@ -109,6 +117,8 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
+
+    @Operation(summary = "get detail information from anime")
     @GetMapping("detail/{href}")
     public ResponseEntity<WebResponse<AnimeDetailResponse>> animeDetails(@PathVariable String href) throws IOException {
         AnimeDetailResponse animeDetailResponse = animeDetailService.getDetails(href);
@@ -120,6 +130,8 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
+
+    @Operation(summary = "get episode detail and link video from anime")
     @GetMapping("/{href}")
     public ResponseEntity<WebResponse<AnimeDetailEpisodeResponse>> animeEpisodeDetails(@PathVariable String href, @RequestParam Integer ep) throws IOException {
         AnimeDetailEpisodeResponse animeDetailEpisodeResponse = animeDetailEpisodeService.get(href, ep);
@@ -131,6 +143,7 @@ public class OtakudesuController {
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "search anime based on keywords")
     @GetMapping("search")
     public ResponseEntity<WebResponse<List<AnimeListResponse>>> animeSearch(@RequestParam String keyword) throws IOException {
         List<AnimeListResponse> animeSearchResponses = animeSearchService.get(keyword);
