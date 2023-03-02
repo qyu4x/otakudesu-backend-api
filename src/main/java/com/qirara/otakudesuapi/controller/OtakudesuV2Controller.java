@@ -1,8 +1,10 @@
 package com.qirara.otakudesuapi.controller;
 
 import com.qirara.otakudesuapi.payload.response.CompleteAnimeV2Response;
+import com.qirara.otakudesuapi.payload.response.OngoingAnimeV2Response;
 import com.qirara.otakudesuapi.payload.response.WebResponse;
 import com.qirara.otakudesuapi.service.CompleteAnimeV2Service;
+import com.qirara.otakudesuapi.service.OngoingAnimeV2Service;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,20 +23,35 @@ public class OtakudesuV2Controller {
 
     private final CompleteAnimeV2Service completeAnimeV2Service;
 
+    private final OngoingAnimeV2Service ongoingAnimeV2Service;
+
     @Autowired
-    public OtakudesuV2Controller(CompleteAnimeV2Service completeAnimeV2Service) {
+    public OtakudesuV2Controller(CompleteAnimeV2Service completeAnimeV2Service, OngoingAnimeV2Service ongoingAnimeV2Service) {
         this.completeAnimeV2Service = completeAnimeV2Service;
+        this.ongoingAnimeV2Service = ongoingAnimeV2Service;
     }
 
 
     @Operation(summary = "get list of the complete anime")
     @GetMapping("complete-anime/{page}")
-    public ResponseEntity<WebResponse<List<CompleteAnimeV2Response>>> listLatestAnime(@PathVariable Integer page) throws IOException {
+    public ResponseEntity<WebResponse<List<CompleteAnimeV2Response>>> listCompletenime(@PathVariable Integer page) throws IOException {
         List<CompleteAnimeV2Response> completeAnimeV2Responses = completeAnimeV2Service.getAll(page);
         WebResponse<List<CompleteAnimeV2Response>> webResponse = new WebResponse<>(
                 HttpStatus.OK.value(),
                 HttpStatus.OK.getReasonPhrase(),
                 completeAnimeV2Responses
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get list of the ongoing anime")
+    @GetMapping("ongoing-anime/{page}")
+    public ResponseEntity<WebResponse<List<OngoingAnimeV2Response>>> listOngoingAnime(@PathVariable Integer page) throws IOException {
+        List<OngoingAnimeV2Response> ongoingAnimeV2Responses = ongoingAnimeV2Service.getAll(page);
+        WebResponse<List<OngoingAnimeV2Response>> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                ongoingAnimeV2Responses
         );
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }

@@ -40,4 +40,7 @@ public class ResourceConfig {
     @Value("${otakudesu.v2.detail}")
     private String otakudesuDetailV2;
 
+    @Value("${otakudesu.v2.ongoing-anime}")
+    private String otakudesuOngoingV2;
+
 }
