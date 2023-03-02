@@ -34,4 +34,10 @@ public class ResourceConfig {
     @Value("${otakudesu.search}")
     private String otakudesuSearch;
 
+    @Value("${otakudesu.v2.complete-anime}")
+    private String otakudesuCompleteV2;
+
+    @Value("${otakudesu.v2.detail}")
+    private String otakudesuDetailV2;
+
 }
