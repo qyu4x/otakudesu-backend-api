@@ -1,9 +1,7 @@
 package com.qirara.otakudesuapi.controller;
 
-import com.qirara.otakudesuapi.payload.response.CompleteAnimeV2Response;
-import com.qirara.otakudesuapi.payload.response.OngoingAnimeV2Response;
-import com.qirara.otakudesuapi.payload.response.ScheduleAnimeResponse;
-import com.qirara.otakudesuapi.payload.response.WebResponse;
+import com.qirara.otakudesuapi.payload.response.*;
+import com.qirara.otakudesuapi.service.AnimeGenresV2Service;
 import com.qirara.otakudesuapi.service.CompleteAnimeV2Service;
 import com.qirara.otakudesuapi.service.OngoingAnimeV2Service;
 import com.qirara.otakudesuapi.service.ScheduleAnimeService;
@@ -29,11 +27,14 @@ public class OtakudesuV2Controller {
 
     private final ScheduleAnimeService scheduleAnimeService;
 
+    private final AnimeGenresV2Service animeGenresV2Service;
+
     @Autowired
-    public OtakudesuV2Controller(CompleteAnimeV2Service completeAnimeV2Service, OngoingAnimeV2Service ongoingAnimeV2Service, ScheduleAnimeService scheduleAnimeService) {
+    public OtakudesuV2Controller(CompleteAnimeV2Service completeAnimeV2Service, OngoingAnimeV2Service ongoingAnimeV2Service, ScheduleAnimeService scheduleAnimeService, AnimeGenresV2Service animeGenresV2Service) {
         this.completeAnimeV2Service = completeAnimeV2Service;
         this.ongoingAnimeV2Service = ongoingAnimeV2Service;
         this.scheduleAnimeService = scheduleAnimeService;
+        this.animeGenresV2Service = animeGenresV2Service;
     }
 
 
@@ -66,6 +67,18 @@ public class OtakudesuV2Controller {
     public ResponseEntity<WebResponse<List<ScheduleAnimeResponse>>> scheduleAnime() throws IOException {
         List<ScheduleAnimeResponse> scheduleAnimeResponses = scheduleAnimeService.getAll();
         WebResponse<List<ScheduleAnimeResponse>> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                scheduleAnimeResponses
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get list of the genre anime")
+    @GetMapping("genre-list")
+    public ResponseEntity<WebResponse<List<AnimeGenreV2Response>>> genreAnime() throws IOException {
+        List<AnimeGenreV2Response> scheduleAnimeResponses = animeGenresV2Service.getAll();
+        WebResponse<List<AnimeGenreV2Response>> webResponse = new WebResponse<>(
                 HttpStatus.OK.value(),
                 HttpStatus.OK.getReasonPhrase(),
                 scheduleAnimeResponses
