@@ -2,9 +2,11 @@ package com.qirara.otakudesuapi.controller;
 
 import com.qirara.otakudesuapi.payload.response.CompleteAnimeV2Response;
 import com.qirara.otakudesuapi.payload.response.OngoingAnimeV2Response;
+import com.qirara.otakudesuapi.payload.response.ScheduleAnimeResponse;
 import com.qirara.otakudesuapi.payload.response.WebResponse;
 import com.qirara.otakudesuapi.service.CompleteAnimeV2Service;
 import com.qirara.otakudesuapi.service.OngoingAnimeV2Service;
+import com.qirara.otakudesuapi.service.ScheduleAnimeService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,10 +27,13 @@ public class OtakudesuV2Controller {
 
     private final OngoingAnimeV2Service ongoingAnimeV2Service;
 
+    private final ScheduleAnimeService scheduleAnimeService;
+
     @Autowired
-    public OtakudesuV2Controller(CompleteAnimeV2Service completeAnimeV2Service, OngoingAnimeV2Service ongoingAnimeV2Service) {
+    public OtakudesuV2Controller(CompleteAnimeV2Service completeAnimeV2Service, OngoingAnimeV2Service ongoingAnimeV2Service, ScheduleAnimeService scheduleAnimeService) {
         this.completeAnimeV2Service = completeAnimeV2Service;
         this.ongoingAnimeV2Service = ongoingAnimeV2Service;
+        this.scheduleAnimeService = scheduleAnimeService;
     }
 
 
@@ -52,6 +57,18 @@ public class OtakudesuV2Controller {
                 HttpStatus.OK.value(),
                 HttpStatus.OK.getReasonPhrase(),
                 ongoingAnimeV2Responses
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get list of the schedule anime ongoing broadcast day")
+    @GetMapping("schedule")
+    public ResponseEntity<WebResponse<List<ScheduleAnimeResponse>>> scheduleAnime() throws IOException {
+        List<ScheduleAnimeResponse> scheduleAnimeResponses = scheduleAnimeService.getAll();
+        WebResponse<List<ScheduleAnimeResponse>> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                scheduleAnimeResponses
         );
         return new ResponseEntity<>(webResponse, HttpStatus.OK);
     }
