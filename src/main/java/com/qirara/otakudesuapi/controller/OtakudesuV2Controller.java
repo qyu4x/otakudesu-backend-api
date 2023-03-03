@@ -1,18 +1,12 @@
 package com.qirara.otakudesuapi.controller;
 
 import com.qirara.otakudesuapi.payload.response.*;
-import com.qirara.otakudesuapi.service.AnimeGenresV2Service;
-import com.qirara.otakudesuapi.service.CompleteAnimeV2Service;
-import com.qirara.otakudesuapi.service.OngoingAnimeV2Service;
-import com.qirara.otakudesuapi.service.ScheduleAnimeService;
+import com.qirara.otakudesuapi.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,12 +23,15 @@ public class OtakudesuV2Controller {
 
     private final AnimeGenresV2Service animeGenresV2Service;
 
+    private final AnimeSearchV2Service animeSearchV2Service;
+
     @Autowired
-    public OtakudesuV2Controller(CompleteAnimeV2Service completeAnimeV2Service, OngoingAnimeV2Service ongoingAnimeV2Service, ScheduleAnimeService scheduleAnimeService, AnimeGenresV2Service animeGenresV2Service) {
+    public OtakudesuV2Controller(CompleteAnimeV2Service completeAnimeV2Service, OngoingAnimeV2Service ongoingAnimeV2Service, ScheduleAnimeService scheduleAnimeService, AnimeGenresV2Service animeGenresV2Service, AnimeSearchV2Service animeSearchService) {
         this.completeAnimeV2Service = completeAnimeV2Service;
         this.ongoingAnimeV2Service = ongoingAnimeV2Service;
         this.scheduleAnimeService = scheduleAnimeService;
         this.animeGenresV2Service = animeGenresV2Service;
+        this.animeSearchV2Service = animeSearchService;
     }
 
 
@@ -79,6 +76,18 @@ public class OtakudesuV2Controller {
     public ResponseEntity<WebResponse<List<AnimeGenreV2Response>>> genreAnime() throws IOException {
         List<AnimeGenreV2Response> scheduleAnimeResponses = animeGenresV2Service.getAll();
         WebResponse<List<AnimeGenreV2Response>> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                scheduleAnimeResponses
+        );
+        return new ResponseEntity<>(webResponse, HttpStatus.OK);
+    }
+
+    @Operation(summary = "search anime based on keywords")
+    @GetMapping("search")
+    public ResponseEntity<WebResponse<List<AnimeSearchV2Response>>> searchAnime(@RequestParam String keyword) throws IOException {
+        List<AnimeSearchV2Response> scheduleAnimeResponses = animeSearchV2Service.get(keyword);
+        WebResponse<List<AnimeSearchV2Response>> webResponse = new WebResponse<>(
                 HttpStatus.OK.value(),
                 HttpStatus.OK.getReasonPhrase(),
                 scheduleAnimeResponses

@@ -49,4 +49,7 @@ public class ResourceConfig {
     @Value("${otakudesu.v2.genre-list}")
     private String otakudesuGenreListV2;
 
+    @Value("${otakudesu.v2.search}")
+    private String otakudesuSearchV2;
+
 }
