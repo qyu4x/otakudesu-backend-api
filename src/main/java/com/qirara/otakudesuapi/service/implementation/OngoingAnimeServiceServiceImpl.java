@@ -40,7 +40,7 @@ public class OngoingAnimeServiceServiceImpl implements OngoingAnimeService {
 
         Elements listOngoingAnime = jsoup.getElementsByClass("col-md-3 col-sm-3");
         listOngoingAnime.stream().forEach(ongoingAnime -> {
-            String imageUrl = ongoingAnime.select("img").attr("src");
+            String imageUrl = ongoingAnime.select("img").attr("data-src");
             String title = ongoingAnime.select("img").attr("alt");
             String href = new StringBuilder(ongoingAnime.select("a").attr("href").replace(resourceConfig.getOtakudesuSpecific(), "").replace("/", "")).insert(0, "/").toString();
 

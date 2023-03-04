@@ -38,7 +38,7 @@ public class AnimeMoviesServiceServiceImpl implements AnimeMoviesService {
         Elements listAnimeMovies = document.getElementsByClass("col-md-3 col-sm-3");
 
         listAnimeMovies.stream().forEach(animeMovie -> {
-            String imageUrl = animeMovie.select("img").attr("src");
+            String imageUrl = animeMovie.select("img").attr("data-src");
             String title = animeMovie.select("img").attr("alt");
             String href = new StringBuilder(animeMovie.select("a").attr("href").replace(resourceConfig.getOtakudesuSpecific(), "").replace("/", "")).insert(0, "/").toString();
 

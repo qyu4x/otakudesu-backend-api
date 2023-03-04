@@ -37,7 +37,7 @@ public class AnimeListServiceImpl implements AnimeListService {
         Document document = Jsoup.connect(url).get();
         Elements listOfAnime = document.getElementsByClass("col-md-3 col-sm-3");
         listOfAnime.forEach(animeList -> {
-            String imageURL = animeList.select("img").attr("src");
+            String imageURL = animeList.select("img").attr("data-src");
             String title = animeList.select("img").attr("alt");
             String linkHref = new StringBuilder(animeList.select("a").attr("href").replace(resourceConfig.getOtakudesuSpecific(), "").replace("/", "")).insert(0, "/").toString();
             log.info("image url {} ", imageURL);

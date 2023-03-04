@@ -36,7 +36,7 @@ public class AnimeSearchServiceImpl implements AnimeSearchService {
         Document document = Jsoup.connect(url).get();
         Elements listSearchAnime = document.getElementsByClass("col-md-3 col-sm-3");
         listSearchAnime.forEach(searchAnime -> {
-            String imageURL = searchAnime.select("img").attr("src");
+            String imageURL = searchAnime.select("img").attr("data-src");
             String title = searchAnime.select("img").attr("alt");
             String linkHref = new StringBuilder(searchAnime.select("a").attr("href").replace(resourceConfig.getOtakudesuSpecific(), "").replace("/", "")).insert(0, "/").toString();
             log.info("image url {} ", imageURL);

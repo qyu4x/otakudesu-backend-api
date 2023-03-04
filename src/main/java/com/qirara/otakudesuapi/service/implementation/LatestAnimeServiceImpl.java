@@ -35,7 +35,7 @@ public class LatestAnimeServiceImpl implements LatestAnimeService {
         Document document = Jsoup.connect(url).get();
         Elements listsLatestAnime = document.getElementsByClass("col-md-4 col-sm-4");
         listsLatestAnime.forEach(latestAnime -> {
-            String imageURL = latestAnime.select("img").attr("src");
+            String imageURL = latestAnime.select("img").attr("data-src");
             String title = latestAnime.select("img").attr("alt");
             String linkHref =  new StringBuilder(latestAnime.select("a").attr("href").replace(resourceConfig.getOtakudesuSpecific(), "").replace("/", "")).insert(0, "/").toString();
             log.info("image url {} ", imageURL);
